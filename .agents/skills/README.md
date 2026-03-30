@@ -12,6 +12,6 @@
   入口：`.agents/skills/UI-UX-PRO-MAX/SKILL.md`
   附注：旧的本地草拟版本已保留为 `.agents/skills/UI-UX-PRO-MAX/DEPRECATED-legacy-skill.md`
 
-- `ai-image-generation`：来自 `inferen-sh/skills`，用于生成 README、宣传页和站点所需的 AI 图片资源  
+- `ai-image-generation`：来自 `inference-sh/skills`，用于生成 README、宣传页和站点所需的 AI 图片资源  
   入口：`.agents/skills/ai-image-generation/SKILL.md`
   附注：使用外部模型 API Key 时仅做临时环境变量注入，不写入仓库
