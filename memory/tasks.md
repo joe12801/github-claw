@@ -8,7 +8,7 @@
 
 ## 进行中
 
-- [~] **2026-03-30** 优化技能工作流：统一迁移到 `.agents/skills/<skill-name>/SKILL.md` 并补充复用规则
+*(暂无)*
 
 ---
 
@@ -20,6 +20,7 @@
 
 ## 已完成（近期）
 
+- [x] **2026-03-30** 优化技能工作流：统一迁移到 `.agents/skills/<skill-name>/SKILL.md` 并补充复用规则
 - [x] **2026-03-30** 建立 `.agents/skills/` 技能目录规范，并迁移 `UI-UX-PRO-MAX` 到标准结构
 - [x] **2026-03-30** 提取 UI-UX-PRO-MAX 技能文件到 `skills/` 目录，便于未来复用
 - [x] **2026-03-30** 为 ai-guide 开发高颜值导航官网并配置 GitHub Pages 部署
