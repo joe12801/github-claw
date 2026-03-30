@@ -16,3 +16,10 @@
 | `MEMORY.md` | 长期记忆：用户偏好、项目背景、持久约定 |
 | `memory/tasks.md` | 任务追踪 |
 | `memory/YYYY-MM-DD.md` | 每日工作日志 |
+| `.agents/skills/<skill-name>/SKILL.md` | 项目级技能主入口，供后续任务直接复用 |
+
+## 技能机制
+
+- 开始任务前，先检查本地 `.agents/skills/`
+- 本地无合适技能时，再到 GitHub 开源仓库和 Skills.sh 搜索
+- 安装后的技能统一存放到 `.agents/skills/<skill-name>/`
