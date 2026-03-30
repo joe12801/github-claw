@@ -910,7 +910,7 @@
     <div class="hero-content">
       <div class="hero-badge">
         <span class="pulse-dot"></span>
-        持续更新中 · 10,700+ Stars
+        持续更新中 · <span id="hero-stars">10,700+</span> Stars
       </div>
       <h1>
         <span class="gradient-text">鱼皮的 AI 知识库</span><br>
@@ -1368,6 +1368,26 @@
         }
       });
     });
+
+    /* ========== Dynamic GitHub Stats ========== */
+    (async function() {
+      try {
+        const res = await fetch('https://api.github.com/repos/liyupi/ai-guide');
+        if (!res.ok) return;
+        const data = await res.json();
+        const stars = data.stargazers_count;
+        const forks = data.forks_count;
+        // Update hero badge
+        const heroStars = document.getElementById('hero-stars');
+        if (heroStars) heroStars.textContent = (stars / 1000).toFixed(1) + 'k+';
+        // Update stat cards with live data
+        const statNumbers = document.querySelectorAll('.stat-number[data-count]');
+        statNumbers.forEach(el => {
+          if (el.dataset.count === '10762') el.dataset.count = String(stars);
+          if (el.dataset.count === '1165') el.dataset.count = String(forks);
+        });
+      } catch(e) { /* Use fallback hardcoded values */ }
+    })();
   </script>
 </body>
 </html>
