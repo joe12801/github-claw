@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Guide - 鱼皮的 AI 知识库 | 免费开源 AI 学习平台</title>
+  <meta name="description" content="程序员鱼皮的 AI 资源大全 + Vibe Coding 零基础教程。10000+ Stars，涵盖 DeepSeek、GPT、Claude、Cursor 等热门 AI 工具教程。">
+  <meta name="keywords" content="AI,Vibe Coding,DeepSeek,ChatGPT,Claude,Cursor,AI编程,开源">
+  <meta property="og:title" content="AI Guide - 鱼皮的 AI 知识库">
+  <meta property="og:description" content="完全免费开放的 AI 知识共享平台，减少信息差，让每个人都能享受技术红利">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐟</text></svg>">
+  <style>
+    /* ========== CSS Reset & Base ========== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-dark: #4f46e5;
+      --accent: #f472b6;
+      --accent-light: #f9a8d4;
+      --bg-dark: #0f0f23;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --text-bright: #f8fafc;
+      --glow-primary: rgba(99, 102, 241, 0.3);
+      --glow-accent: rgba(244, 114, 182, 0.3);
+      --gradient-hero: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.06);
+      --section-gap: 120px;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ========== Scrollbar ========== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+    /* ========== Utility ========== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section-title {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .section-title h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--text-bright) 0%, var(--primary-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .section-title p {
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--primary-light);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    /* ========== Canvas Background ========== */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ========== Navigation ========== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 16px 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .navbar.scrolled {
+      padding: 10px 0;
+      background: rgba(15, 15, 35, 0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-bright);
+    }
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a:hover { color: var(--text-bright); }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--primary);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white !important;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px var(--glow-primary);
+    }
+    .nav-cta::after { display: none !important; }
+    .mobile-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .mobile-toggle span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ========== Hero Section ========== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 80%, rgba(244, 114, 182, 0.06) 0%, transparent 50%),
+                  radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.04) 0%, transparent 70%);
+      animation: heroGlow 15s ease-in-out infinite;
+    }
+    @keyframes heroGlow {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(2%, -2%) scale(1.02); }
+      66% { transform: translate(-1%, 1%) scale(0.98); }
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary-light);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    .hero-badge .pulse-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      letter-spacing: -0.03em;
+      animation: fadeInUp 0.8s ease-out 0.1s backwards;
+    }
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--primary-light), var(--accent), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: gradientShift 4s ease-in-out infinite;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+    .hero-desc {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-dim);
+      max-width: 680px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease-out 0.3s backwards;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 24px var(--glow-primary);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 40px var(--glow-primary);
+    }
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent), #e879a8);
+      color: white;
+      box-shadow: 0 4px 24px var(--glow-accent);
+    }
+    .btn-accent:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 40px var(--glow-accent);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== Stats Section ========== */
+    .stats {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+      margin-top: -40px;
+      margin-bottom: var(--section-gap);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .stat-card {
+      text-align: center;
+      padding: 32px 20px;
+      border-radius: 20px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--text-bright), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ========== Features Section ========== */
+    .features {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+      margin-bottom: var(--section-gap);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      padding: 36px 28px;
+      border-radius: 20px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .feature-card:hover {
+      transform: translateY(-6px);
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+    .feature-icon.purple { background: rgba(99, 102, 241, 0.12); }
+    .feature-icon.pink { background: rgba(244, 114, 182, 0.12); }
+    .feature-icon.green { background: rgba(34, 197, 94, 0.12); }
+    .feature-icon.orange { background: rgba(251, 146, 60, 0.12); }
+    .feature-icon.cyan { background: rgba(34, 211, 238, 0.12); }
+    .feature-icon.yellow { background: rgba(250, 204, 21, 0.12); }
+    .feature-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 10px;
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+    .feature-tag {
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 16px;
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary-light);
+    }
+
+    /* ========== Vibe Coding Spotlight ========== */
+    .spotlight {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+      margin-bottom: var(--section-gap);
+    }
+    .spotlight-card {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(244, 114, 182, 0.06));
+      border: 1px solid rgba(99, 102, 241, 0.15);
+      padding: 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .spotlight-card::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--glow-primary) 0%, transparent 70%);
+      filter: blur(60px);
+    }
+    .spotlight-content {
+      position: relative;
+      z-index: 1;
+    }
+    .spotlight-content .badge { margin-bottom: 20px; }
+    .spotlight-content h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--text-bright);
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    .spotlight-content > p {
+      color: var(--text-dim);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .spotlight-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .spotlight-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .spotlight-feature .check {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+    .spotlight-visual {
+      position: relative;
+      z-index: 1;
+    }
+    .spotlight-outline {
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+      padding: 28px;
+    }
+    .outline-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--glass-border);
+      font-size: 0.9rem;
+      color: var(--text);
+      transition: color 0.2s;
+    }
+    .outline-item:last-child { border-bottom: none; }
+    .outline-item:hover { color: var(--primary-light); }
+    .outline-num {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ========== Roadmap ========== */
+    .roadmap {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+      margin-bottom: var(--section-gap);
+    }
+    .roadmap-timeline {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      padding-left: 40px;
+    }
+    .roadmap-timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px; top: 0;
+      width: 2px; height: 100%;
+      background: linear-gradient(180deg, var(--primary), var(--accent), var(--primary));
+      border-radius: 2px;
+    }
+    .roadmap-item {
+      position: relative;
+      margin-bottom: 40px;
+      padding: 28px;
+      border-radius: 16px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      transition: all 0.3s;
+    }
+    .roadmap-item:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateX(4px);
+    }
+    .roadmap-dot {
+      position: absolute;
+      left: -33px; top: 32px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+      background: var(--bg-dark);
+    }
+    .roadmap-item.active .roadmap-dot {
+      background: var(--primary);
+      box-shadow: 0 0 12px var(--glow-primary);
+    }
+    .roadmap-item .phase-badge {
+      display: inline-flex;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .phase-badge.done { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
+    .phase-badge.current { background: rgba(99, 102, 241, 0.12); color: var(--primary-light); }
+    .phase-badge.future { background: rgba(250, 204, 21, 0.12); color: #facc15; }
+    .roadmap-item h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 8px;
+    }
+    .roadmap-item p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    /* ========== Changelog ========== */
+    .changelog {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+      margin-bottom: var(--section-gap);
+    }
+    .changelog-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .changelog-item {
+      padding: 24px 28px;
+      border-radius: 16px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      transition: all 0.3s;
+    }
+    .changelog-item:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+    }
+    .changelog-date {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      white-space: nowrap;
+      min-width: 90px;
+      padding-top: 2px;
+    }
+    .changelog-body h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .changelog-body p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ========== Star History ========== */
+    .star-history {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+      margin-bottom: var(--section-gap);
+    }
+    .star-chart-container {
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 20px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 40px;
+      text-align: center;
+    }
+    .star-chart-container img {
+      width: 100%;
+      border-radius: 12px;
+      opacity: 0.9;
+      transition: opacity 0.3s;
+    }
+    .star-chart-container:hover img { opacity: 1; }
+    .star-chart-label {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
+    /* ========== Author / Community ========== */
+    .community {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+      margin-bottom: var(--section-gap);
+    }
+    .community-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .community-card {
+      padding: 40px;
+      border-radius: 20px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      text-align: center;
+      transition: all 0.4s;
+    }
+    .community-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+    }
+    .community-card .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .community-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 10px;
+    }
+    .community-card p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+    .community-card .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* ========== CTA Section ========== */
+    .cta-section {
+      position: relative;
+      z-index: 1;
+      padding: 100px 24px;
+      text-align: center;
+    }
+    .cta-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      margin-bottom: 20px;
+      color: var(--text-bright);
+      line-height: 1.3;
+    }
+    .cta-section p {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      margin-bottom: 36px;
+      line-height: 1.8;
+    }
+    .cta-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ========== Footer ========== */
+    .footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--primary-light); }
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* ========== Scroll Animations ========== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .spotlight-card {
+        grid-template-columns: 1fr;
+        padding: 40px;
+        gap: 40px;
+      }
+    }
+    @media (max-width: 768px) {
+      :root { --section-gap: 80px; }
+      .nav-links { display: none; }
+      .mobile-toggle { display: flex; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        background: rgba(15, 15, 35, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        gap: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .features-grid { grid-template-columns: 1fr; }
+      .spotlight-card { padding: 28px; }
+      .spotlight-features { grid-template-columns: 1fr; }
+      .community-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2rem; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+      .changelog-item { flex-direction: column; gap: 8px; }
+      .star-chart-container { padding: 20px; }
+      .footer-content { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .stat-card { padding: 20px 12px; }
+      .stat-number { font-size: 1.8rem; }
+      .hero { padding: 100px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particle Background -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">🐟</div>
+        <span>AI Guide</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#features">精选内容</a></li>
+        <li><a href="#vibe-coding">Vibe Coding</a></li>
+        <li><a href="#roadmap">路线图</a></li>
+        <li><a href="#changelog">更新日志</a></li>
+        <li><a href="#growth">增长趋势</a></li>
+        <li><a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener" class="nav-cta">⭐ Star on GitHub</a></li>
+      </ul>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        持续更新中 · 10,700+ Stars
+      </div>
+      <h1>
+        <span class="gradient-text">鱼皮的 AI 知识库</span><br>
+        让每个人都能享受 AI 红利
+      </h1>
+      <p class="hero-desc">
+        完全免费开放的 AI 知识共享平台，涵盖 Vibe Coding 教程、DeepSeek / GPT / Claude 大模型玩法、
+        Prompt 提示词大全、AI 编程工具、产品变现指南，帮你快速掌握 AI 技术。
+      </p>
+      <div class="hero-actions">
+        <a href="https://ai.codefather.cn" target="_blank" rel="noopener" class="btn btn-primary">
+          🌐 在线阅读
+        </a>
+        <a href="https://ai.codefather.cn/vibe" target="_blank" rel="noopener" class="btn btn-accent">
+          🔥 Vibe Coding 教程
+        </a>
+        <a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener" class="btn btn-secondary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub 仓库
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats fade-in">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-number" data-count="10762">0</div>
+        <div class="stat-label">GitHub Stars</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🍴</div>
+        <div class="stat-number" data-count="1165">0</div>
+        <div class="stat-label">Forks</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-number" data-count="200">0+</div>
+        <div class="stat-label">原创文章</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🌍</div>
+        <div class="stat-number" data-count="3">0</div>
+        <div class="stat-label">语言版本</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>📖 精选内容板块</h2>
+        <p>涵盖 AI 学习的方方面面，从零基础到进阶，从工具到变现，应有尽有</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon purple">🚀</div>
+          <h3>Vibe Coding 零基础教程</h3>
+          <p>上千张图、几十万字的保姆级教程，结合两年半 AI 编程经验，帮助零基础用户快速上手 Vibe Coding 开发产品。</p>
+          <span class="feature-tag">🔥 强烈推荐</span>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon pink">🤖</div>
+          <h3>AI 模型大全</h3>
+          <p>深度解析 DeepSeek、GPT-5、Claude 4、Gemini 3.0 等主流大模型，提供使用指南、技巧和对比测评。</p>
+          <span class="feature-tag">持续更新</span>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon green">💻</div>
+          <h3>AI 编程工具</h3>
+          <p>Cursor、Claude Code、TRAE、Copilot 等主流 AI 编程工具详细教程和使用技巧，提升 10 倍编码效率。</p>
+          <span class="feature-tag">实战导向</span>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon orange">🎯</div>
+          <h3>项目实战教程</h3>
+          <p>手把手带你从 0 到 1 做出真实产品：个人网站、模拟面试系统、AI 伴侣、视频下载总结器等实战项目。</p>
+          <span class="feature-tag">手把手教学</span>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon cyan">💰</div>
+          <h3>产品变现指南</h3>
+          <p>从需求分析到技术选型，从盈利模式到 SEO/GEO 优化，教你如何用 AI 产品赚钱。</p>
+          <span class="feature-tag">变现实操</span>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon yellow">📖</div>
+          <h3>知识百科 & 资源</h3>
+          <p>Agent / RAG / MCP / A2A 等 AI 概念大全，Prompt 提示词模板，工具合集，让你系统掌握 AI 知识体系。</p>
+          <span class="feature-tag">体系化</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vibe Coding Spotlight -->
+  <section class="spotlight" id="vibe-coding">
+    <div class="spotlight-card fade-in">
+      <div class="spotlight-content">
+        <span class="badge">🔥 重磅推荐</span>
+        <h2>Vibe Coding 零基础入门教程</h2>
+        <p>
+          不仅是程序员，连设计师、产品运营、甚至完全不懂技术的人都能用 Vibe Coding 实现自己的想法。
+          鱼皮一人爆肝创作，上千张图、几十万字，免费吊打 90% 的付费 Vibe Coding 内容。
+        </p>
+        <div class="spotlight-features">
+          <div class="spotlight-feature">
+            <span class="check">✓</span>
+            <span>基础必读 · 10分钟上手</span>
+          </div>
+          <div class="spotlight-feature">
+            <span class="check">✓</span>
+            <span>编程工具选择指南</span>
+          </div>
+          <div class="spotlight-feature">
+            <span class="check">✓</span>
+            <span>多个实战项目教程</span>
+          </div>
+          <div class="spotlight-feature">
+            <span class="check">✓</span>
+            <span>经验技巧与心法</span>
+          </div>
+          <div class="spotlight-feature">
+            <span class="check">✓</span>
+            <span>产品变现全流程</span>
+          </div>
+          <div class="spotlight-feature">
+            <span class="check">✓</span>
+            <span>概念大全 & FAQ</span>
+          </div>
+        </div>
+        <a href="https://ai.codefather.cn/vibe" target="_blank" rel="noopener" class="btn btn-accent">
+          👉 立即开始学习
+        </a>
+      </div>
+      <div class="spotlight-visual">
+        <div class="spotlight-outline">
+          <div class="outline-item"><span class="outline-num">00</span> Vibe Coding 简介</div>
+          <div class="outline-item"><span class="outline-num">01</span> 快速上手 Vibe Coding</div>
+          <div class="outline-item"><span class="outline-num">10</span> 编程工具大全</div>
+          <div class="outline-item"><span class="outline-num">20</span> 项目实战教程</div>
+          <div class="outline-item"><span class="outline-num">30</span> 经验技巧进阶</div>
+          <div class="outline-item"><span class="outline-num">40</span> 编程学习路线</div>
+          <div class="outline-item"><span class="outline-num">50</span> 产品变现攻略</div>
+          <div class="outline-item"><span class="outline-num">60</span> 资源大全 & 概念百科</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="roadmap" id="roadmap">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>🗺️ 学习路线图</h2>
+        <p>无论你是零基础新手还是有经验的开发者，都能找到适合自己的学习路径</p>
+      </div>
+      <div class="roadmap-timeline fade-in">
+        <div class="roadmap-item active">
+          <div class="roadmap-dot"></div>
+          <span class="phase-badge done">✅ 已发布</span>
+          <h3>Phase 1 · AI 基础入门</h3>
+          <p>理解 AI 大模型基础概念，掌握 DeepSeek / GPT / Claude 的使用方法和提问技巧，学会利用 AI 提升日常效率。</p>
+        </div>
+        <div class="roadmap-item active">
+          <div class="roadmap-dot"></div>
+          <span class="phase-badge done">✅ 已发布</span>
+          <h3>Phase 2 · Vibe Coding 入门教程</h3>
+          <p>零基础学习 Vibe Coding，掌握 Cursor / Claude Code / TRAE 等 AI 编程工具，10 分钟做出第一个作品。</p>
+        </div>
+        <div class="roadmap-item active">
+          <div class="roadmap-dot"></div>
+          <span class="phase-badge done">✅ 已发布</span>
+          <h3>Phase 3 · 项目实战与进阶</h3>
+          <p>OpenClaw 保姆级教程、AI 万能视频下载总结器、AI 伴侣等实战项目，以及 MCP 开发、Spring AI 框架整合等进阶内容。</p>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot"></div>
+          <span class="phase-badge current">🚧 进行中</span>
+          <h3>Phase 4 · 产品变现与推广</h3>
+          <p>SEO / GEO 优化实战、盈利模式设计、自媒体运营、系统监控告警、云服务安全防护等产品化全链路内容。</p>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot"></div>
+          <span class="phase-badge future">📋 规划中</span>
+          <h3>Phase 5 · 社区共建与国际化</h3>
+          <p>英语、繁体中文等多语言翻译持续推进，邀请社区贡献者共建内容，建设更完善的 AI 知识生态。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Changelog -->
+  <section class="changelog" id="changelog">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>📝 最近更新</h2>
+        <p>知识库持续高频更新，紧跟 AI 领域最新动态</p>
+      </div>
+      <div class="changelog-list fade-in">
+        <div class="changelog-item">
+          <div class="changelog-date">2026-03-28</div>
+          <div class="changelog-body">
+            <h4>新增 AI 万能视频下载总结器项目实战 + GEO 文章</h4>
+            <p>新增 Cursor 项目实战、GEO 生成式引擎优化实战、概念大全扩充 Token 缓存 / Harness Engineering / ACP 协议等。</p>
+          </div>
+        </div>
+        <div class="changelog-item">
+          <div class="changelog-date">2026-03-24</div>
+          <div class="changelog-body">
+            <h4>新增 OpenClaw 接入微信保姆级教程</h4>
+            <p>将 OpenClaw 微信接入教程纳入完整教程体系。</p>
+          </div>
+        </div>
+        <div class="changelog-item">
+          <div class="changelog-date">2026-03-20</div>
+          <div class="changelog-body">
+            <h4>OpenClaw 保姆级教程系列发布（17 篇）</h4>
+            <p>从入门到进阶完整覆盖：安装接入、模型切换、技能系统、多 Agent、记忆管理、安全指南等。</p>
+          </div>
+        </div>
+        <div class="changelog-item">
+          <div class="changelog-date">2026-03-07</div>
+          <div class="changelog-body">
+            <h4>新增 AI 热点监控 / GitHub 翻译 / 塔罗占卜项目实战</h4>
+            <p>多个实战项目上线，补充 GitHub Copilot 深度介绍和国产 IDE 插件推荐。</p>
+          </div>
+        </div>
+        <div class="changelog-item">
+          <div class="changelog-date">2026-02-24</div>
+          <div class="changelog-body">
+            <h4>云服务安全防护 / GitHub 涨星技巧 / Remotion 动画视频</h4>
+            <p>3 篇支线文章上线，系统监控告警实践优化，产品变现板块持续扩展。</p>
+          </div>
+        </div>
+        <div class="changelog-item">
+          <div class="changelog-date">2026-02-15</div>
+          <div class="changelog-body">
+            <h4>工具实战 6 篇整合 + 概念大全大扩展</h4>
+            <p>新增 Agentic Engineering、深度思考、Hooks、Subagents 等概念，全教程更新模型版本引用。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Star History -->
+  <section class="star-history" id="growth">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>📈 Star 增长趋势</h2>
+        <p>创建不到两个月即突破万星，增长势头强劲</p>
+      </div>
+      <div class="star-chart-container fade-in">
+        <a href="https://star-history.com/#liyupi/ai-guide&Date" target="_blank" rel="noopener">
+          <img src="https://api.star-history.com/svg?repos=liyupi/ai-guide&type=Date&theme=dark" alt="Star History Chart" loading="lazy">
+        </a>
+        <p class="star-chart-label">点击图表查看实时数据 · 数据来源 star-history.com</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community -->
+  <section class="community" id="community">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>🤝 加入社区</h2>
+        <p>与万千 AI 爱好者一起学习交流，共同成长</p>
+      </div>
+      <div class="community-grid fade-in">
+        <div class="community-card">
+          <div class="card-icon">👨‍💻</div>
+          <h3>关于作者 · 程序员鱼皮</h3>
+          <p>全网百万粉丝，前腾讯全栈工程师。专注 AI 技术布道，创办编程导航、面试鸭等产品。坚持免费分享，帮助更多人。</p>
+          <a href="https://space.bilibili.com/12890453" target="_blank" rel="noopener" class="btn btn-secondary">
+            📺 B站关注
+          </a>
+        </div>
+        <div class="community-card">
+          <div class="card-icon">💬</div>
+          <h3>参与项目共建</h3>
+          <p>欢迎 AI 探索者参与知识库共建！你将获得影响力提升、深度学习机会、社区认同和优质人脉。</p>
+          <a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener" class="btn btn-primary">
+            🚀 参与贡献
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner fade-in">
+      <h2>别犹豫，现在就开始你的 AI 之旅 🛫</h2>
+      <p>10 分钟后你就能做出第一个作品，跟着鱼皮一起开启 Vibe Coding 之旅！</p>
+      <div class="cta-actions">
+        <a href="https://ai.codefather.cn/vibe" target="_blank" rel="noopener" class="btn btn-accent">
+          🔥 开始学习 Vibe Coding
+        </a>
+        <a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener" class="btn btn-secondary">
+          ⭐ 给个 Star 支持
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="https://ai.codefather.cn" target="_blank" rel="noopener">在线阅读</a>
+        <a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://space.bilibili.com/12890453" target="_blank" rel="noopener">Bilibili</a>
+        <a href="https://ai.codefather.cn/vibe" target="_blank" rel="noopener">Vibe Coding 教程</a>
+      </div>
+      <div class="footer-copy">
+        &copy; 2025-2026 AI Guide by 程序员鱼皮 · 免费开源 · 知识改变命运
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ========== Particle Background ========== */
+    (function() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let w, h;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * w;
+          this.y = Math.random() * h;
+          this.size = Math.random() * 1.5 + 0.5;
+          this.speedX = (Math.random() - 0.5) * 0.3;
+          this.speedY = (Math.random() - 0.5) * 0.3;
+          this.opacity = Math.random() * 0.4 + 0.1;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(99, 102, 241, ${this.opacity})`;
+          ctx.fill();
+        }
+      }
+
+      const count = Math.min(80, Math.floor(w * h / 15000));
+      for (let i = 0; i < count; i++) particles.push(new Particle());
+
+      function animate() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach(p => { p.update(); p.draw(); });
+
+        // Draw connections
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(99, 102, 241, ${0.06 * (1 - dist / 120)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    /* ========== Navbar Scroll ========== */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    /* ========== Mobile Menu ========== */
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    mobileToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    /* ========== Scroll Animations ========== */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    /* ========== Counter Animation ========== */
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counters = entry.target.querySelectorAll('.stat-number[data-count]');
+          counters.forEach(counter => {
+            const target = parseInt(counter.dataset.count);
+            const suffix = counter.textContent.replace(/\d/g, '');
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function updateCounter(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              const current = Math.round(target * eased);
+              counter.textContent = current.toLocaleString() + suffix;
+              if (progress < 1) requestAnimationFrame(updateCounter);
+            }
+            requestAnimationFrame(updateCounter);
+          });
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.stats-grid').forEach(el => counterObserver.observe(el));
+
+    /* ========== Smooth scroll for anchor links ========== */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
