@@ -8,5 +8,6 @@
 
 ## 当前已安装技能
 
-- `UI-UX-PRO-MAX`：高颜值前端页面设计系统与组件模式库  
+- `UI-UX-PRO-MAX`：已替换为来自 `nextlevelbuilder/ui-ux-pro-max-skill` 的正式版本，包含 `SKILL.md`、搜索脚本与数据资源  
   入口：`.agents/skills/UI-UX-PRO-MAX/SKILL.md`
+  附注：旧的本地草拟版本已保留为 `.agents/skills/UI-UX-PRO-MAX/DEPRECATED-legacy-skill.md`

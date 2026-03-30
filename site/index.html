@@ -45,6 +45,7 @@
     }
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
+    main [id] { scroll-margin-top: 110px; }
 
     /* ========== Scrollbar ========== */
     ::-webkit-scrollbar { width: 6px; }
@@ -53,9 +54,43 @@
 
     /* ========== Utility ========== */
     .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .skip-link {
+      position: absolute;
+      top: 16px;
+      left: 24px;
+      z-index: 2000;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: var(--text-bright);
+      color: var(--bg-dark);
+      font-weight: 700;
+      transform: translateY(-180%);
+      transition: transform 0.2s ease;
+    }
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid rgba(129, 140, 248, 0.85);
+      outline-offset: 3px;
+      box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.18);
+    }
     .section-title {
       text-align: center;
-      margin-bottom: 64px;
+      margin-bottom: 52px;
     }
     .section-title h2 {
       font-size: clamp(1.8rem, 4vw, 2.5rem);
@@ -130,7 +165,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      color: white;
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
     .nav-links {
       display: flex;
@@ -298,6 +337,11 @@
       position: relative;
       overflow: hidden;
     }
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
@@ -326,6 +370,79 @@
     .btn-accent:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 40px var(--glow-accent);
+    }
+    .hero-search-panel {
+      max-width: 760px;
+      margin: 32px auto 0;
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(15, 15, 35, 0.6);
+      border: 1px solid rgba(129, 140, 248, 0.16);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      animation: fadeInUp 0.8s ease-out 0.4s backwards;
+    }
+    .hero-search-form {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .hero-search-input {
+      flex: 1;
+      min-width: 0;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-bright);
+      font-size: 1rem;
+    }
+    .hero-search-input::placeholder { color: var(--text-dim); }
+    .hero-search-submit {
+      flex-shrink: 0;
+      min-width: 128px;
+      justify-content: center;
+    }
+    .hero-search-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .hero-topics {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .topic-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .topic-chip:hover {
+      background: rgba(99, 102, 241, 0.12);
+      border-color: rgba(129, 140, 248, 0.28);
+      color: var(--text-bright);
+    }
+    .search-status {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+    .search-match {
+      border-color: rgba(129, 140, 248, 0.48) !important;
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.45), 0 20px 60px rgba(79, 70, 229, 0.16) !important;
+      background: rgba(99, 102, 241, 0.09) !important;
     }
 
     @keyframes fadeInUp {
@@ -364,8 +481,20 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
     .stat-icon {
-      font-size: 2rem;
-      margin-bottom: 12px;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 14px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-bright);
+      background: rgba(129, 140, 248, 0.12);
+      border: 1px solid rgba(129, 140, 248, 0.18);
     }
     .stat-number {
       font-size: 2.2rem;
@@ -381,6 +510,11 @@
       color: var(--text-dim);
       margin-top: 4px;
       font-weight: 500;
+    }
+    .stat-meta {
+      margin-top: 10px;
+      font-size: 0.76rem;
+      color: rgba(226, 232, 240, 0.76);
     }
 
     /* ========== Features Section ========== */
@@ -427,7 +561,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
+      font-size: 0.86rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-bright);
       margin-bottom: 20px;
     }
     .feature-icon.purple { background: rgba(99, 102, 241, 0.12); }
@@ -741,8 +879,20 @@
       transform: translateY(-4px);
     }
     .community-card .card-icon {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 20px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-bright);
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(129, 140, 248, 0.2);
     }
     .community-card h3 {
       font-size: 1.2rem;
@@ -834,6 +984,19 @@
       opacity: 1;
       transform: translateY(0);
     }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .fade-in {
+        opacity: 1;
+        transform: none;
+      }
+      #particles-canvas { display: none; }
+    }
 
     /* ========== Responsive ========== */
     @media (max-width: 1024px) {
@@ -867,6 +1030,9 @@
       .hero h1 { font-size: 2rem; }
       .hero-actions { flex-direction: column; }
       .hero-actions .btn { width: 100%; justify-content: center; }
+      .hero-search-form { flex-direction: column; }
+      .hero-search-submit { width: 100%; }
+      .hero-search-meta { align-items: flex-start; }
       .changelog-item { flex-direction: column; gap: 8px; }
       .star-chart-container { padding: 20px; }
       .footer-content { flex-direction: column; }
@@ -876,10 +1042,13 @@
       .stat-card { padding: 20px 12px; }
       .stat-number { font-size: 1.8rem; }
       .hero { padding: 100px 16px 60px; }
+      .section-title { margin-bottom: 40px; }
+      .hero-search-panel { padding: 18px; }
     }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">跳到主要内容</a>
 
   <!-- Particle Background -->
   <canvas id="particles-canvas"></canvas>
@@ -888,7 +1057,7 @@
   <nav class="navbar" id="navbar">
     <div class="container">
       <a href="#" class="nav-logo">
-        <div class="nav-logo-icon">🐟</div>
+        <div class="nav-logo-icon" aria-hidden="true">AI</div>
         <span>AI Guide</span>
       </a>
       <ul class="nav-links" id="navLinks">
@@ -897,14 +1066,15 @@
         <li><a href="#roadmap">路线图</a></li>
         <li><a href="#changelog">更新日志</a></li>
         <li><a href="#growth">增长趋势</a></li>
-        <li><a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener" class="nav-cta">⭐ Star on GitHub</a></li>
+        <li><a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener" class="nav-cta">Star on GitHub</a></li>
       </ul>
-      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <button class="mobile-toggle" id="mobileToggle" aria-label="切换导航菜单" aria-expanded="false" aria-controls="navLinks">
         <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
 
+  <main id="main-content">
   <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="hero-content">
@@ -922,15 +1092,32 @@
       </p>
       <div class="hero-actions">
         <a href="https://ai.codefather.cn" target="_blank" rel="noopener" class="btn btn-primary">
-          🌐 在线阅读
+          在线阅读
         </a>
         <a href="https://ai.codefather.cn/vibe" target="_blank" rel="noopener" class="btn btn-accent">
-          🔥 Vibe Coding 教程
+          Vibe Coding 教程
         </a>
         <a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener" class="btn btn-secondary">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub 仓库
         </a>
+      </div>
+      <div class="hero-search-panel fade-in">
+        <form class="hero-search-form" id="heroSearchForm">
+          <label class="sr-only" for="heroSearchInput">搜索 AI Guide 内容</label>
+          <input id="heroSearchInput" class="hero-search-input" type="search" placeholder="快速定位内容，例如：Vibe Coding、Cursor、MCP、变现" autocomplete="off">
+          <button type="submit" class="btn btn-primary hero-search-submit">快速查找</button>
+        </form>
+        <div class="hero-search-meta">
+          <div class="hero-topics" aria-label="热门搜索主题">
+            <button type="button" class="topic-chip" data-search="Vibe Coding">Vibe Coding</button>
+            <button type="button" class="topic-chip" data-search="AI 模型">AI 模型</button>
+            <button type="button" class="topic-chip" data-search="编程工具">编程工具</button>
+            <button type="button" class="topic-chip" data-search="MCP">MCP</button>
+            <button type="button" class="topic-chip" data-search="变现">产品变现</button>
+          </div>
+          <p class="search-status" id="searchStatus" aria-live="polite">支持快速跳转到最相关的内容区块。</p>
+        </div>
       </div>
     </div>
   </section>
@@ -939,68 +1126,72 @@
   <section class="stats fade-in">
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon">⭐</div>
+        <div class="stat-icon" aria-hidden="true">GH</div>
         <div class="stat-number" data-count="10762">0</div>
         <div class="stat-label">GitHub Stars</div>
+        <div class="stat-meta">持续增长 · 社区共建</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">🍴</div>
+        <div class="stat-icon" aria-hidden="true">FK</div>
         <div class="stat-number" data-count="1165">0</div>
         <div class="stat-label">Forks</div>
+        <div class="stat-meta">开源协作 · 快速扩散</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">📚</div>
+        <div class="stat-icon" aria-hidden="true">DOC</div>
         <div class="stat-number" data-count="200">0+</div>
         <div class="stat-label">原创文章</div>
+        <div class="stat-meta">实战教程 · 高频更新</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">🌍</div>
+        <div class="stat-icon" aria-hidden="true">INTL</div>
         <div class="stat-number" data-count="3">0</div>
         <div class="stat-label">语言版本</div>
+        <div class="stat-meta">多语覆盖 · 持续扩展</div>
       </div>
     </div>
   </section>
 
   <!-- Features Section -->
   <section class="features" id="features">
-    <div class="container">
-      <div class="section-title fade-in">
-        <h2>📖 精选内容板块</h2>
+      <div class="container">
+        <div class="section-title fade-in">
+        <h2>精选内容板块</h2>
         <p>涵盖 AI 学习的方方面面，从零基础到进阶，从工具到变现，应有尽有</p>
       </div>
       <div class="features-grid">
         <div class="feature-card fade-in">
-          <div class="feature-icon purple">🚀</div>
+          <div class="feature-icon purple" aria-hidden="true">VC</div>
           <h3>Vibe Coding 零基础教程</h3>
           <p>上千张图、几十万字的保姆级教程，结合两年半 AI 编程经验，帮助零基础用户快速上手 Vibe Coding 开发产品。</p>
-          <span class="feature-tag">🔥 强烈推荐</span>
+          <span class="feature-tag">重点推荐</span>
         </div>
         <div class="feature-card fade-in">
-          <div class="feature-icon pink">🤖</div>
+          <div class="feature-icon pink" aria-hidden="true">LLM</div>
           <h3>AI 模型大全</h3>
           <p>深度解析 DeepSeek、GPT-5、Claude 4、Gemini 3.0 等主流大模型，提供使用指南、技巧和对比测评。</p>
           <span class="feature-tag">持续更新</span>
         </div>
         <div class="feature-card fade-in">
-          <div class="feature-icon green">💻</div>
+          <div class="feature-icon green" aria-hidden="true">TOOL</div>
           <h3>AI 编程工具</h3>
           <p>Cursor、Claude Code、TRAE、Copilot 等主流 AI 编程工具详细教程和使用技巧，提升 10 倍编码效率。</p>
           <span class="feature-tag">实战导向</span>
         </div>
         <div class="feature-card fade-in">
-          <div class="feature-icon orange">🎯</div>
+          <div class="feature-icon orange" aria-hidden="true">PROJ</div>
           <h3>项目实战教程</h3>
           <p>手把手带你从 0 到 1 做出真实产品：个人网站、模拟面试系统、AI 伴侣、视频下载总结器等实战项目。</p>
           <span class="feature-tag">手把手教学</span>
         </div>
         <div class="feature-card fade-in">
-          <div class="feature-icon cyan">💰</div>
+          <div class="feature-icon cyan" aria-hidden="true">MON</div>
           <h3>产品变现指南</h3>
           <p>从需求分析到技术选型，从盈利模式到 SEO/GEO 优化，教你如何用 AI 产品赚钱。</p>
           <span class="feature-tag">变现实操</span>
         </div>
         <div class="feature-card fade-in">
-          <div class="feature-icon yellow">📖</div>
+          <div class="feature-icon yellow" aria-hidden="true">KB</div>
           <h3>知识百科 & 资源</h3>
           <p>Agent / RAG / MCP / A2A 等 AI 概念大全，Prompt 提示词模板，工具合集，让你系统掌握 AI 知识体系。</p>
           <span class="feature-tag">体系化</span>
@@ -1013,7 +1204,7 @@
   <section class="spotlight" id="vibe-coding">
     <div class="spotlight-card fade-in">
       <div class="spotlight-content">
-        <span class="badge">🔥 重磅推荐</span>
+        <span class="badge">重点推荐</span>
         <h2>Vibe Coding 零基础入门教程</h2>
         <p>
           不仅是程序员，连设计师、产品运营、甚至完全不懂技术的人都能用 Vibe Coding 实现自己的想法。
@@ -1046,7 +1237,7 @@
           </div>
         </div>
         <a href="https://ai.codefather.cn/vibe" target="_blank" rel="noopener" class="btn btn-accent">
-          👉 立即开始学习
+          立即开始学习
         </a>
       </div>
       <div class="spotlight-visual">
@@ -1068,37 +1259,37 @@
   <section class="roadmap" id="roadmap">
     <div class="container">
       <div class="section-title fade-in">
-        <h2>🗺️ 学习路线图</h2>
+        <h2>学习路线图</h2>
         <p>无论你是零基础新手还是有经验的开发者，都能找到适合自己的学习路径</p>
       </div>
       <div class="roadmap-timeline fade-in">
         <div class="roadmap-item active">
           <div class="roadmap-dot"></div>
-          <span class="phase-badge done">✅ 已发布</span>
+          <span class="phase-badge done">已发布</span>
           <h3>Phase 1 · AI 基础入门</h3>
           <p>理解 AI 大模型基础概念，掌握 DeepSeek / GPT / Claude 的使用方法和提问技巧，学会利用 AI 提升日常效率。</p>
         </div>
         <div class="roadmap-item active">
           <div class="roadmap-dot"></div>
-          <span class="phase-badge done">✅ 已发布</span>
+          <span class="phase-badge done">已发布</span>
           <h3>Phase 2 · Vibe Coding 入门教程</h3>
           <p>零基础学习 Vibe Coding，掌握 Cursor / Claude Code / TRAE 等 AI 编程工具，10 分钟做出第一个作品。</p>
         </div>
         <div class="roadmap-item active">
           <div class="roadmap-dot"></div>
-          <span class="phase-badge done">✅ 已发布</span>
+          <span class="phase-badge done">已发布</span>
           <h3>Phase 3 · 项目实战与进阶</h3>
           <p>OpenClaw 保姆级教程、AI 万能视频下载总结器、AI 伴侣等实战项目，以及 MCP 开发、Spring AI 框架整合等进阶内容。</p>
         </div>
         <div class="roadmap-item">
           <div class="roadmap-dot"></div>
-          <span class="phase-badge current">🚧 进行中</span>
+          <span class="phase-badge current">进行中</span>
           <h3>Phase 4 · 产品变现与推广</h3>
           <p>SEO / GEO 优化实战、盈利模式设计、自媒体运营、系统监控告警、云服务安全防护等产品化全链路内容。</p>
         </div>
         <div class="roadmap-item">
           <div class="roadmap-dot"></div>
-          <span class="phase-badge future">📋 规划中</span>
+          <span class="phase-badge future">规划中</span>
           <h3>Phase 5 · 社区共建与国际化</h3>
           <p>英语、繁体中文等多语言翻译持续推进，邀请社区贡献者共建内容，建设更完善的 AI 知识生态。</p>
         </div>
@@ -1110,7 +1301,7 @@
   <section class="changelog" id="changelog">
     <div class="container">
       <div class="section-title fade-in">
-        <h2>📝 最近更新</h2>
+        <h2>最近更新</h2>
         <p>知识库持续高频更新，紧跟 AI 领域最新动态</p>
       </div>
       <div class="changelog-list fade-in">
@@ -1164,12 +1355,12 @@
   <section class="star-history" id="growth">
     <div class="container">
       <div class="section-title fade-in">
-        <h2>📈 Star 增长趋势</h2>
+        <h2>Star 增长趋势</h2>
         <p>创建不到两个月即突破万星，增长势头强劲</p>
       </div>
       <div class="star-chart-container fade-in">
         <a href="https://star-history.com/#liyupi/ai-guide&Date" target="_blank" rel="noopener">
-          <img src="https://api.star-history.com/svg?repos=liyupi/ai-guide&type=Date&theme=dark" alt="Star History Chart" loading="lazy">
+          <img src="https://api.star-history.com/svg?repos=liyupi/ai-guide&type=Date&theme=dark" alt="AI Guide GitHub Star 增长历史图表" loading="lazy">
         </a>
         <p class="star-chart-label">点击图表查看实时数据 · 数据来源 star-history.com</p>
       </div>
@@ -1180,24 +1371,24 @@
   <section class="community" id="community">
     <div class="container">
       <div class="section-title fade-in">
-        <h2>🤝 加入社区</h2>
+        <h2>加入社区</h2>
         <p>与万千 AI 爱好者一起学习交流，共同成长</p>
       </div>
       <div class="community-grid fade-in">
         <div class="community-card">
-          <div class="card-icon">👨‍💻</div>
+          <div class="card-icon" aria-hidden="true">YP</div>
           <h3>关于作者 · 程序员鱼皮</h3>
           <p>全网百万粉丝，前腾讯全栈工程师。专注 AI 技术布道，创办编程导航、面试鸭等产品。坚持免费分享，帮助更多人。</p>
           <a href="https://space.bilibili.com/12890453" target="_blank" rel="noopener" class="btn btn-secondary">
-            📺 B站关注
+            B站关注
           </a>
         </div>
         <div class="community-card">
-          <div class="card-icon">💬</div>
+          <div class="card-icon" aria-hidden="true">CO</div>
           <h3>参与项目共建</h3>
           <p>欢迎 AI 探索者参与知识库共建！你将获得影响力提升、深度学习机会、社区认同和优质人脉。</p>
           <a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener" class="btn btn-primary">
-            🚀 参与贡献
+            参与贡献
           </a>
         </div>
       </div>
@@ -1207,14 +1398,14 @@
   <!-- CTA -->
   <section class="cta-section">
     <div class="cta-inner fade-in">
-      <h2>别犹豫，现在就开始你的 AI 之旅 🛫</h2>
+      <h2>别犹豫，现在就开始你的 AI 之旅</h2>
       <p>10 分钟后你就能做出第一个作品，跟着鱼皮一起开启 Vibe Coding 之旅！</p>
       <div class="cta-actions">
         <a href="https://ai.codefather.cn/vibe" target="_blank" rel="noopener" class="btn btn-accent">
-          🔥 开始学习 Vibe Coding
+          开始学习 Vibe Coding
         </a>
         <a href="https://github.com/liyupi/ai-guide" target="_blank" rel="noopener" class="btn btn-secondary">
-          ⭐ 给个 Star 支持
+          给个 Star 支持
         </a>
       </div>
     </div>
@@ -1234,10 +1425,13 @@
       </div>
     </div>
   </footer>
+  </main>
 
   <script>
     /* ========== Particle Background ========== */
     (function() {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (prefersReducedMotion.matches) return;
       const canvas = document.getElementById('particles-canvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -1312,51 +1506,80 @@
     /* ========== Mobile Menu ========== */
     const mobileToggle = document.getElementById('mobileToggle');
     const navLinks = document.getElementById('navLinks');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function closeMobileMenu() {
+      navLinks.classList.remove('open');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+    }
     mobileToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
+      const isOpen = navLinks.classList.toggle('open');
+      mobileToggle.setAttribute('aria-expanded', String(isOpen));
     });
     navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => navLinks.classList.remove('open'));
+      link.addEventListener('click', closeMobileMenu);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMobileMenu();
     });
 
-    /* ========== Scroll Animations ========== */
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    function scrollToSection(target) {
+      const offset = navbar.offsetHeight + 24;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
+    }
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    /* ========== Scroll Animations ========== */
+    if (prefersReducedMotion.matches) {
+      document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }
 
     /* ========== Counter Animation ========== */
-    const counterObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const counters = entry.target.querySelectorAll('.stat-number[data-count]');
-          counters.forEach(counter => {
-            const target = parseInt(counter.dataset.count);
-            const suffix = counter.textContent.replace(/\d/g, '');
-            const duration = 2000;
-            const startTime = performance.now();
-
-            function updateCounter(currentTime) {
-              const elapsed = currentTime - startTime;
-              const progress = Math.min(elapsed / duration, 1);
-              const eased = 1 - Math.pow(1 - progress, 3);
-              const current = Math.round(target * eased);
-              counter.textContent = current.toLocaleString() + suffix;
-              if (progress < 1) requestAnimationFrame(updateCounter);
-            }
-            requestAnimationFrame(updateCounter);
-          });
-          counterObserver.unobserve(entry.target);
+    function setCounterValues(entryTarget) {
+      const counters = entryTarget.querySelectorAll('.stat-number[data-count]');
+      counters.forEach(counter => {
+        const target = parseInt(counter.dataset.count, 10);
+        const suffix = counter.textContent.replace(/\d/g, '');
+        if (prefersReducedMotion.matches) {
+          counter.textContent = target.toLocaleString() + suffix;
+          return;
         }
-      });
-    }, { threshold: 0.3 });
+        const duration = 2000;
+        const startTime = performance.now();
 
-    document.querySelectorAll('.stats-grid').forEach(el => counterObserver.observe(el));
+        function updateCounter(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(target * eased);
+          counter.textContent = current.toLocaleString() + suffix;
+          if (progress < 1) requestAnimationFrame(updateCounter);
+        }
+        requestAnimationFrame(updateCounter);
+      });
+    }
+    if (prefersReducedMotion.matches) {
+      document.querySelectorAll('.stats-grid').forEach(setCounterValues);
+    } else {
+      const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setCounterValues(entry.target);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      document.querySelectorAll('.stats-grid').forEach(el => counterObserver.observe(el));
+    }
 
     /* ========== Smooth scroll for anchor links ========== */
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1364,8 +1587,58 @@
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
           e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          scrollToSection(target);
         }
+      });
+    });
+
+    /* ========== Hero Search ========== */
+    const heroSearchForm = document.getElementById('heroSearchForm');
+    const heroSearchInput = document.getElementById('heroSearchInput');
+    const searchStatus = document.getElementById('searchStatus');
+    const topicChips = document.querySelectorAll('.topic-chip');
+    const searchTargets = Array.from(document.querySelectorAll('.feature-card, .spotlight-card, .roadmap-item, .changelog-item, .community-card'));
+
+    function clearSearchMatches() {
+      searchTargets.forEach(element => element.classList.remove('search-match'));
+    }
+
+    function updateSearchStatus(message) {
+      if (searchStatus) searchStatus.textContent = message;
+    }
+
+    function findSearchMatch(query) {
+      const normalized = query.trim().toLowerCase();
+      if (!normalized) return null;
+      return searchTargets.find(element => element.textContent.toLowerCase().includes(normalized)) || null;
+    }
+
+    function runHeroSearch(query) {
+      const normalized = query.trim();
+      clearSearchMatches();
+      if (!normalized) {
+        updateSearchStatus('支持快速跳转到最相关的内容区块。');
+        heroSearchInput.focus();
+        return;
+      }
+      const match = findSearchMatch(normalized);
+      if (!match) {
+        updateSearchStatus(`未找到“${normalized}”，可以尝试搜索：Vibe Coding、AI 模型、编程工具、MCP。`);
+        return;
+      }
+      match.classList.add('search-match');
+      scrollToSection(match);
+      updateSearchStatus(`已定位到与“${normalized}”最相关的内容区块。`);
+    }
+
+    heroSearchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      runHeroSearch(heroSearchInput.value);
+    });
+    topicChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        heroSearchInput.value = chip.dataset.search || '';
+        runHeroSearch(heroSearchInput.value);
       });
     });
 
