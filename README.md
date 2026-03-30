@@ -129,7 +129,7 @@ AI Guide 导航网站把这些问题重新组织成了一个清晰的浏览体�
 本项目是一个纯静态网站，不依赖额外构建流程。
 
 ```bash
-cd /home/runner/work/github-claw/github-claw/site
+cd site
 python3 -m http.server 8000
 ```
 
@@ -138,13 +138,14 @@ python3 -m http.server 8000
 ## 仓库结构
 
 ```text
-/home/runner/work/github-claw/github-claw
+.
 ├── README.md                        # 项目介绍文档
 ├── site/
 │   ├── index.html                   # ai-guide 导航网站主页面（单文件静态站）
 │   └── assets/readme/               # README 配套宣传图片
-└── .github/workflows/deploy-pages.yml
-                                    # GitHub Pages 自动部署配置
+└── .github/
+    └── workflows/
+        └── deploy-pages.yml         # GitHub Pages 自动部署配置
 ```
 
 ## 部署方式
@@ -157,7 +158,7 @@ python3 -m http.server 8000
 
 对应配置文件：
 
-- `/home/runner/work/github-claw/github-claw/.github/workflows/deploy-pages.yml`
+- `.github/workflows/deploy-pages.yml`
 
 ## README 配图说明
 
