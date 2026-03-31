@@ -76,9 +76,9 @@ jobs:
                 }
               );
       
-              const assignees = (response.data.assignees || []).map(a => a.login);
-              const assigned = assignees.includes('copilot-swe-agent[bot]');
-      
+              const assignees = (response.data.assignees || []).map(a => String(a.login || a.name || '').trim());
+              const assigned = assignees.some(a => a.toLowerCase().includes('copilot'));
+
               if (!assigned) {
                 throw new Error(`Copilot coding agent was not found in assignees after the API call. Current assignees: ${assignees.join(', ') || '(none)'}`);
               }
