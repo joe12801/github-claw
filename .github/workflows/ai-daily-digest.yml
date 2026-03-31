@@ -54,16 +54,20 @@ jobs:
             let hnStories = [];
             try {
               const topRes = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
+              if (!topRes.ok) throw new Error(`HTTP ${topRes.status}`);
               const topIds = await topRes.json();
               const candidates = topIds.slice(0, 80);
 
               const storyPromises = candidates.map(async (id) => {
-                const res = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
-                return res.json();
+                try {
+                  const res = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
+                  if (!res.ok) return null;
+                  return res.json();
+                } catch { return null; }
               });
-              const stories = await Promise.all(storyPromises);
+              const stories = (await Promise.all(storyPromises)).filter(Boolean);
 
-              const aiKeywords = /\b(ai|llm|gpt|openai|claude|gemini|anthropic|deepseek|mistral|llama|transformer|diffusion|machine.?learning|deep.?learning|neural|agi|copilot|chatbot|generative|foundation.?model|sora|midjourney|stable.?diffusion|hugging.?face|fine.?tun|rag|vector.?db|embedding|multimodal|reasoning|agent|mcp)\b/i;
+              const aiKeywords = /\b(ai|llm|gpt|openai|claude|gemini|anthropic|deepseek|mistral|llama|transformer|diffusion|machine.?learning|deep.?learning|neural|agi|copilot|chatbot|generative|foundation.?model|sora|midjourney|stable.?diffusion|hugging.?face|fine.?tun(?:e|ing)|rag|vector.?db|embedding|multimodal|reasoning|agent|mcp)\b/i;
               hnStories = stories
                 .filter(s => s && s.title && aiKeywords.test(s.title))
                 .sort((a, b) => (b.score || 0) - (a.score || 0))
@@ -73,6 +77,8 @@ jobs:
             }
 
             // --- 构建 Issue 内容 ---
+            const truncate = (s, max = 100) => s ? s.substring(0, max) : '暂无描述';
+
             let body = `> 🤖 本日报由 GitHub Actions 自动生成，数据来源：GitHub Trending + Hacker News\n`;
             body += `> 📅 数据范围：${sinceDate} ~ ${todayStr}\n\n`;
 
@@ -92,8 +98,7 @@ jobs:
             body += `\n## 🌟 本周新星 AI 项目（GitHub）\n\n`;
             if (trendingRepos.length > 0) {
               trendingRepos.forEach((r, i) => {
-                const desc = r.description ? r.description.substring(0, 100) : '暂无描述';
-                body += `${i + 1}. **[${r.full_name}](${r.html_url})** ⭐ ${r.stargazers_count} — ${desc}\n`;
+                body += `${i + 1}. **[${r.full_name}](${r.html_url})** ⭐ ${r.stargazers_count} — ${truncate(r.description)}\n`;
               });
             } else {
               body += `_本周暂无匹配的新项目。_\n`;
@@ -103,8 +108,7 @@ jobs:
             body += `\n## 🚀 近期活跃 AI 项目（GitHub）\n\n`;
             if (hotRepos.length > 0) {
               hotRepos.forEach((r, i) => {
-                const desc = r.description ? r.description.substring(0, 100) : '暂无描述';
-                body += `${i + 1}. **[${r.full_name}](${r.html_url})** ⭐ ${r.stargazers_count} — ${desc}\n`;
+                body += `${i + 1}. **[${r.full_name}](${r.html_url})** ⭐ ${r.stargazers_count} — ${truncate(r.description)}\n`;
               });
             } else {
               body += `_本周暂无匹配的活跃项目。_\n`;
