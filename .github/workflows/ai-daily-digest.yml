@@ -2,8 +2,8 @@ name: AI 科技日报
 
 on:
   schedule:
-    # 每天北京时间 13:00（UTC 05:00）
-    - cron: '0 5 * * *'
+    # 每天北京时间 13:17（UTC 05:17）
+    - cron: '17 5 * * *'
   workflow_dispatch:
 
 permissions:
