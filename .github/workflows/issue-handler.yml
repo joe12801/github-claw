@@ -63,7 +63,7 @@ jobs:
                   owner,
                   repo,
                   issue_number: issueNumber,
-                  assignees: ['copilot-swe-agent'],
+                  assignees: ['copilot-swe-agent[bot]'],
                   agent_assignment: true
                 }
               );
