@@ -7,6 +7,9 @@ from PIL import Image
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "outputs")
 
+# Maximum characters to capture from FFmpeg stderr on error
+MAX_ERROR_LENGTH = 1000
+
 
 def ensure_dirs():
     os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -96,7 +99,7 @@ def process_audio(input_path, output_format, bitrate="128k", operation="convert"
 
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
     if result.returncode != 0:
-        raise RuntimeError(f"FFmpeg audio error: {result.stderr[:500]}")
+        raise RuntimeError(f"FFmpeg audio error: {result.stderr[:MAX_ERROR_LENGTH]}")
 
     return output_path
 
@@ -147,6 +150,6 @@ def process_video(input_path, output_format, crf=28, resolution=None, operation=
 
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
     if result.returncode != 0:
-        raise RuntimeError(f"FFmpeg video error: {result.stderr[:500]}")
+        raise RuntimeError(f"FFmpeg video error: {result.stderr[:MAX_ERROR_LENGTH]}")
 
     return output_path

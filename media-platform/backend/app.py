@@ -11,6 +11,7 @@ from processors import (
     process_image, process_audio, process_video,
     IMAGE_FORMATS, AUDIO_FORMATS, VIDEO_FORMATS,
     UPLOAD_DIR, OUTPUT_DIR, ensure_dirs,
+    MAX_ERROR_LENGTH,
 )
 
 app = Flask(__name__)
@@ -70,7 +71,7 @@ def _fail_task(task_id, error_msg):
     conn = get_db()
     conn.execute(
         "UPDATE tasks SET status='failed', error_message=? WHERE id=?",
-        (str(error_msg)[:500], task_id),
+        (str(error_msg)[:MAX_ERROR_LENGTH], task_id),
     )
     conn.commit()
     conn.close()
