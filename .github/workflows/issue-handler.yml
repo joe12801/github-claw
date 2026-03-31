@@ -1,0 +1,99 @@
+name: Issue Auto Handler
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  issues: write
+
+jobs:
+  # Job 1: Auto-reply when a new issue is opened
+  auto-reply:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post confirmation comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = context.issue.number;
+            const author = context.payload.issue.user.login;
+
+            const body = [
+              `👋 你好 @${author}，感谢你提交这个 Issue！`,
+              '',
+              '我们已收到你的反馈，会尽快查看。在此之前，请确认以下信息以帮助我们更快地定位问题：',
+              '',
+              '- **环境信息**：操作系统、浏览器版本、相关工具版本等',
+              '- **复现步骤**：如何稳定触发该问题',
+              '- **期望行为 vs 实际行为**：你预期看到什么，实际发生了什么',
+              '',
+              '如果是功能建议，请描述你期望的使用场景和预期效果。',
+              '',
+              '> 🤖 此回复由自动化工作流生成。'
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: body
+            });
+
+      - name: Check if new issue has bug label and assign to Copilot
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = context.payload.issue.labels.map(l => l.name.toLowerCase());
+            if (!labels.includes('bug')) {
+              console.log('No bug label found on new issue, skipping Copilot assignment.');
+              return;
+            }
+
+            const issueNumber = context.issue.number;
+            console.log(`Bug label detected on issue #${issueNumber}, assigning to Copilot...`);
+
+            try {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                assignees: ['copilot']
+              });
+              console.log('Successfully assigned to Copilot.');
+            } catch (error) {
+              console.log(`Failed to assign to Copilot: ${error.message}`);
+            }
+
+  # Job 2: Assign to Copilot when bug label is added later
+  assign-copilot-on-bug:
+    if: github.event.action == 'labeled' && github.event.label.name == 'bug'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign issue to Copilot coding agent
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = context.issue.number;
+            console.log(`Bug label added to issue #${issueNumber}, assigning to Copilot...`);
+
+            try {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                assignees: ['copilot']
+              });
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: '🐛 已识别为 Bug，正在分配给 Copilot coding agent 处理。Copilot 将自动分析问题并尝试开 PR 修复。\n\n> 🤖 此回复由自动化工作流生成。'
+              });
+
+              console.log('Successfully assigned to Copilot and posted comment.');
+            } catch (error) {
+              console.log(`Failed to assign to Copilot: ${error.message}`);
+            }
