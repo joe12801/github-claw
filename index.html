@@ -10,8 +10,35 @@
   <main>
     <h1>热血格斗（FC 风格）—— 原型</h1>
     <p>键盘：← → 移动，↑ 跳跃，Z 普通攻击，X 特殊（长按可蓄力）。</p>
+
+    <div id="menu" class="overlay">
+      <div class="panel">
+        <h2>热血格斗</h2>
+        <div class="buttons">
+          <button id="btn-start">开始游戏</button>
+          <button id="btn-high">查看高分</button>
+          <button id="btn-instr">说明</button>
+        </div>
+        <div id="menu-info" class="info">
+          <p>按 <strong>Z</strong> 攻击，<strong>X</strong> 蓄力必杀。按 <strong>Esc</strong> 暂停。</p>
+          <p>高分：<span id="best-score">0</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="pause" class="overlay hidden">
+      <div class="panel">
+        <h2>暂停</h2>
+        <div class="buttons">
+          <button id="btn-resume">继续</button>
+          <button id="btn-restart">重新开始</button>
+          <button id="btn-back">返回标题</button>
+        </div>
+      </div>
+    </div>
+
     <canvas id="game" width="640" height="360"></canvas>
-    <p>这是浏览器原型（无外部资源）。直接在仓库中打开 <code>index.html</code> 即可试玩。</p>
+    <p class="hint">这是浏览器原型（无外部资源）。在 Codespaces 中启动后会自动在 8000 端口运行本地静态服务器并预览。</p>
   </main>
   <script src="src/game.js"></script>
 </body>
